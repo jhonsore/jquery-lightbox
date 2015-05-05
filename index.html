@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Plugin</title>
+<script type="text/javascript" src="jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="jquery-lightbox.js"></script>
+<script type="text/javascript">
+	jQuery(document).ready(
+	function()
+	{
+		
+		//lightbox com html simples
+		var _html = '<div style="background-color:#ffffff; width:500px; height:300px;"></div>';
+		
+		$("#button").click(function(){
+			$('body').lightbox({
+								added: added,
+								destroyed: destroyed,
+								background:'background-color:rgba(0,0,0,.8);',
+								time:300,
+								width:500,
+								minWidth:980,
+								height:300,
+								type:'html',
+								contentHtml:_html,
+								closeWhenClickOutside:true,
+								close_button:" background:url(bt-fechar.png) no-repeat 0 0; position:absolute; margin:10px 10px 0 0; width:25px; height:25px; display:block; background:url(bt-fechar.png) no-repeat 0 0; top: 0; right:0;"
+								});
+			return false;	
+		});
+		
+		function added () {
+			console.log("plugin adicionado");
+		}
+		
+		function destroyed () {
+			console.log("plugin removido");
+		}
+				
+		//-----------------------------------------
+		
+		//lightbox com ajax		
+		$("#button-2").click(function(){
+			$('body').lightbox({
+								background:'background-color:rgba(0,0,0,.8);',
+								time:300,
+								width:500,
+								height:300,
+								type:'ajax',
+								url:"ajax.php",
+								type_ajax					: "POST",
+								dataType					: "json",
+								closeWhenClickOutside:true,
+								show_loader:"width:32px; height:32px; display:block; background:url(ajax-loader.gif) no-repeat center center #000000; border-radius:5px; padding:10px; position:absolute; top:50%; left:50%; margin:-16px 0 0 -16px; z-index:10;",
+								ajax_error:ajax_error,
+								ajax_sucess:ajax_sucess,
+								ajax_complete:ajax_complete});
+			return false;	
+		});
+		
+		function ajax_error (event) {
+			console.log("ajax error");
+		}
+		
+		function ajax_sucess (event) {
+			console.log("ajax sucess");
+			//alert(event.data)
+		}
+		
+		function ajax_complete (event) {
+			console.log("ajax complete");
+		}
+		
+		//-----------------------------------------
+	});
+
+</script>
+<style type="text/css">
+
+</style>
+</head>
+
+<body>
+<a href="#" id="button" style="border:1px solid black; padding:5px 10px; margin:50px 0 0 50px; display:inline-block; width:100px; text-align:center; text-decoration:none; font-family:Arial, Helvetica, sans-serif;">HTML</a>
+<a href="#" id="button-2" style="border:1px solid black; padding:5px 10px; margin:50px 0 0 50px; display:inline-block; width:100px; text-align:center; text-decoration:none; font-family:Arial, Helvetica, sans-serif;">AJAX</a>
+	
+</body>
+</html>
