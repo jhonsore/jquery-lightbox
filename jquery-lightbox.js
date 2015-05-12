@@ -67,6 +67,8 @@
                 $('body').addClass('lightbox-css-added');
                 $('head').append(getCss());
             }
+			
+			jQuery(document.body).css('overflow', 'hidden');
 
             //adiciona o html do lightbox
             plugin_element.append(getHtml ());
@@ -118,6 +120,7 @@
         {
             $('.lightbox-wrapper').remove();
             plugin_settings.destroyed.call();
+			jQuery(document.body).css('overflow', 'auto');
         }
 
         //carrega o conteúdo do html via ajax
