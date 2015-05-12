@@ -231,7 +231,7 @@
 						_html += '<div class="lightbox-loader"></div>';
 					}
 					_html += '<tr>';
-						_html += '<td class="lightbox-content" style=" padding:30px;">';
+						_html += '<td class="lightbox-content" style=" padding:30px; vertical-align: middle;">';
 						_html += '<div class="lightbox-background"></div>';
 							_html += '<div style=" position:relative;" class="lightbox-load-content">';
 								//só cria o botão de fechar do lightbox caso tenha a propriedade \close_button\ na instanciação
