@@ -4,19 +4,27 @@
     {
         var methods =
         {
-            init :										function( options ){ 			return this.each(function(){	_init(this, options);});},
-            destroy :									function( options ){ 			return this.each(function(){	_destroy(this,options);});}
+            init :										function( options )
+			{
+				//como o objeto ainda não existe, primeiramente criamos ele e o adicionamos no html
+				addObject(this.selector);
+				var _obj = $(this.selector);
+				return _obj.each(function(){	_init(_obj, options);});
+			},
+            destroy :									function( options ){ 			return this.each(function(){	_destroy(this,options);});},
+			hideContent :								function( options ){ 			return this.each(function(){	_hideContent(this,options);});},
+			showContent :								function( options ){ 			return this.each(function(){	_showContent(this,options);});}
         };
-
+		
         //----------------------------------------------------------------------
         //----------------------------------------------------------------------
         var defaults =
         {
+			object						: this.selector,
             background					: 'background-color:rgba(0,0,0,.8);',//background do overlay
             zIndex                      : "10000",
             type						: 'html',//ajax or html
             time						: 300,//tempo para abrir e fechar o overlay
-            minWidth					: '',//tamanho minimo do overlay
             width						: 300,//tamanho do objeto central
             height						: 300,//altura do objeto central
             show_loader					: "",//objeto de carregando
@@ -25,16 +33,17 @@
             url							: "",//caminho do arquivo a ser carregado
             type_ajax					: "",//GET ou POST
             dataType					: "",//estrutura a ser retornada json ou ""
-            added						: function() {},
-            destroyed					: function(){},
-            ajax_error					: function(){},
-            ajax_sucess					: function(){},
-            ajax_complete				: function(){}
+			data						: "",//dados a serem enviados quando dataType == json
+            added						: function() {},//plugin adicionando
+            destroyed					: function(){},//plugin removido
+            ajax_error					: function(){},//erro no ajax
+            ajax_sucess					: function(){},//sucesso ajax
+            ajax_complete				: function(){}//ajax completo
         };
 
         var plugin_settings;
         var plugin_element;
-
+		
         //----------------------------------------------------------------------
         //----------------------------------------------------------------------
 
@@ -62,17 +71,12 @@
         function initialize($this)
         {
             //adiciona o css na página
-            if(!$("body").hasClass("lightbox-css-added"))
-            {
-                $('body').addClass('lightbox-css-added');
-                $('head').append(getCss());
-            }
-			
 			jQuery(document.body).css('overflow', 'hidden');
-
+			
+			
             //adiciona o html do lightbox
             plugin_element.append(getHtml ());
-
+			
             //
             if(plugin_settings.type == "ajax")
             {
@@ -82,17 +86,19 @@
             {
                 insertHtml();
             }
-
+			
             plugin_settings.added.call();
-
+			
+			$(plugin_settings.object).data(plugin_settings);
+			
             //revela o lightbox
-            $('.lightbox-wrapper').show();
-            $('.lightbox-wrapper').animate({opacity:1},plugin_settings.time);
+            $(plugin_settings.object).show();
+            $(plugin_settings.object).animate({opacity:1},plugin_settings.time);
 
             //fecha o lightbox caso ocorra um clique fora do box central
             if(plugin_settings.closeWhenClickOutside)
             {
-                $('.lightbox-background').mousedown(function()
+                $('.lightbox-background',$(plugin_settings.object)).mousedown(function()
                     {
                         removeLightbox();
                     }
@@ -100,7 +106,7 @@
             }
 
             //botão de fechar
-            $(".lightbox-button-close").click(function()
+            $(".lightbox-button-close",$(plugin_settings.object)).click(function()
                 {
                     removeLightbox ();
                     return false;
@@ -112,13 +118,14 @@
         //remove o plugin com uma naimação fade out
         function removeLightbox ()
         {
-            $('.lightbox-wrapper').fadeOut(plugin_settings.time,function(){ destroy();});
+            $(plugin_settings.object).fadeOut(plugin_settings.time,function(){ destroy();});
         }
 
         //destroi o plugin
         function destroy ()
         {
-            $('.lightbox-wrapper').remove();
+			$(plugin_settings.object).data(null);
+            $(plugin_settings.object).remove();
             plugin_settings.destroyed.call();
 			jQuery(document.body).css('overflow', 'auto');
         }
@@ -131,45 +138,59 @@
                 url: plugin_settings.url,
                 type: plugin_settings.type_ajax,
                 dataType: plugin_settings.dataType,
+				data: plugin_settings.data,
                 error: function (data)
                 {
                     plugin_settings.ajax_error.call(this, {data:data});
-                    checkLoader();
+                    checkLoader('remove');
                 },
                 success: function (data)
                 {
-                    $(".lightbox-content").css({opacity:0});
+                    $(".lightbox-content",$(plugin_settings.object)).css({opacity:0});
 
                     //adiciona o html
 					var _html = (plugin_settings.dataType == "json") ? data.html : data;
-					$(".lightbox-content .lightbox-load-content").append(_html);
+					_html = $(_html);
+					_html.addClass("content-loaded");
+					_html.css({width:plugin_settings.width, height:plugin_settings.height});
 					
-					$('.lightbox-content .lightbox-load-content').css(
+					$(".lightbox-content .lightbox-load-content",$(plugin_settings.object)).append(_html);
+					addCloseButton(_html);
+					$('.lightbox-content .lightbox-load-content',$(plugin_settings.object)).css(
 						{
 							width:(plugin_settings.width)+"px",
 							height:(plugin_settings.height)+"px",
 							margin:"0 auto"
 						}
 					);
+										
+					addCloseButton (_html);
 
                     //--------------
                     plugin_settings.ajax_sucess.call(this, {data:data});
-					$(".lightbox-content").animate({opacity:1},200);
+					$(".lightbox-content",$(plugin_settings.object)).animate({opacity:1},200);
                 },
                 complete: function (data)
                 {
-                    checkLoader();
+                    checkLoader('remove');
                     plugin_settings.ajax_complete.call(this, {data:data});
                 }
             });
         }
 
-        function checkLoader ()
+        function checkLoader (_check)
         {
-            if($(".lightbox-loader").size() > 0)
-            {
-                $(".lightbox-loader").remove();
-            }
+			if(_check == 'add')
+			{
+				plugin_element.append('<div class="lightbox-loader" style="'+plugin_settings.show_loader+'"></div>');
+			}
+			else
+			{
+				if($(".lightbox-loader",$(plugin_settings.object)).size() > 0)
+				{
+					$(".lightbox-loader",$(plugin_settings.object)).remove();
+				}
+			}
         }
 
         //insere o conteúdo do html
@@ -177,9 +198,13 @@
         {
 
             //adiciona o html
-            $(".lightbox-content .lightbox-load-content").append(plugin_settings.contentHtml);
+			var _html = $(plugin_settings.contentHtml);
+			_html.addClass("content-loaded");
+			$(".lightbox-content .lightbox-load-content",$(plugin_settings.object)).append(_html);
+			addCloseButton(_html);
+			_html.css({width:plugin_settings.width, height:plugin_settings.height});
 			
-			$('.lightbox-content .lightbox-load-content').css(
+			$('.lightbox-content .lightbox-load-content',$(plugin_settings.object)).css(
 				{
 					width:(plugin_settings.width)+"px",
 					height:(plugin_settings.height)+"px",
@@ -190,60 +215,187 @@
         }
 
         //----------------------
-        //gera o css do lightbox
-        function getCss () {
+        //oculta o conteúdo		
+		function _hideContent ( $obj, $property ) {
+			var _button = $property.item;
+			_button.parents(".content-loaded").fadeOut(200,function(){loadNewContent($($obj),$property);});
+		}
+		
+		//carrega um novo conteúdo no lightox
+		function loadNewContent ($obj,$data)
+		{
+			var _newData = $.extend($obj.data(), $data);
+			plugin_settings = _newData;
+			plugin_element = $obj;
 
-            //-------------------------
+			if(plugin_settings.type == "ajax")
+			{		
+				checkLoader('add');
+					
+				$.ajax({
+					url: _newData.url,
+					type: _newData.type_ajax,
+					dataType: _newData.dataType,
+					data: _newData.data,
+					error: function (data)
+					{
+						_newData.ajax_error.call(this, {data:data});
+						checkLoader('remove');
+					},
+					success: function (data)
+					{					
+						//adiciona o html
+						
+						var _html = (plugin_settings.dataType == "json") ? data.html : data;
+						_html = $(_html);
+						_html.css({opacity:0});
+						$(".lightbox-load-content",$obj).append(_html);
+						_html.addClass("content-loaded");
+						_html.css({width:plugin_settings.width, height:plugin_settings.height});
+						
+						$('.lightbox-load-content',$obj).css(
+							{
+								width:(plugin_settings.width)+"px",
+								height:(plugin_settings.height)+"px"
+							}
+						);
+						
+						addCloseButton (_html);
+						
+						if(plugin_settings.close_button != "")
+						{
+							/*$(".lightbox-button-close", _html).click(function()
+							{
+								_html.fadeOut(200,function()
+								{
+									_html.remove();
+									
+									var count = ($('.lightbox-load-content',$obj).children().length)-1;
+									
+									var _itemShow = $('.content-loaded',$obj).eq(count);
+									
+									$('.lightbox-load-content',$obj).css(
+										{
+											width:(_itemShow.width())+"px",
+											height:(_itemShow.height())+"px"
+										}
+									);
+									
+									_itemShow.fadeIn(200);								
+									
+								});
+								return false;
+							});*/
+						}
+					   
+						//--------------
+						plugin_settings.ajax_sucess.call(this, {data:data});
+						
+						_html.animate({opacity:1},200); 
+					},
+					complete: function (data)
+					{
+						checkLoader('remove');
+						plugin_settings.ajax_complete.call(this, {data:data});
+					}
+				});
+			}
+			else//type == html
+			{
+				insertHtml ();
+			}
 
-            //-------------------------
-            var _css;
-            _css = '<style type="text/css">';
-            //-------------
-            _css += '.lightbox-wrapper{ position:fixed; top:0; left:0; width:100%; height:100%; opacity:0; display:none; overflow:scroll; z-index:'+plugin_settings.zIndex+';}';
-             _css += '.lightbox-background{ position:absolute; top:0; left:0; width:100%; height:100%;'+plugin_settings.background+';}';
+		}
+		
+		//----------------------
+        //mostra o conteúdo
+		function _showContent ( $obj, $property ) {
+			
+		}
+		
+		//-------------------------
+		//adiciona elemento
+		function addObject (_item)
+		{
+			var res = _item.charAt(0);//checa se o primeiro caracter é um /./ ou um # para adicionar um /id/ ou uma /classe/
+			var _oj = _item.substring(1,(_item.length));
+			var _add = (res == "#") ? 'id="'+_oj+'"' : 'class="'+_oj+'"';
 
-            if(plugin_settings.close_button != "")
-            {
-                _css += '.lightbox-button-close{'+plugin_settings.close_button+'}';
-            }
-
-            if(plugin_settings.show_loader != "")
-            {
-                _css += '.lightbox-loader{'+plugin_settings.show_loader+'}';
-            }
-            //-------------
-            _css += '</style>';
-
-            return _css;
-        }
+			var _html;
+			_html = '<div '+_add+'></div>';
+			jQuery(document.body).append(_html);
+		}
+		
+		//----------------
+		//adiciona o botão de fechar
+		function addCloseButton (_html) {
+			//só cria o botão de fechar do lightbox caso tenha a propriedade \close_button\ na instanciação
+			if(plugin_settings.close_button != "")
+			{
+				_html.append('<a href="#" class="lightbox-button-close" style="'+plugin_settings.close_button+'"></a>');
+				
+				//---------
+				$(".lightbox-button-close", _html).click(function()
+				{
+					_html.fadeOut(200,function()
+					{
+						_html.remove();
+						
+						var count = ($('.lightbox-load-content',plugin_element).children().length)-1;
+						
+						var _itemShow = $('.content-loaded',plugin_element).eq(count);
+						
+						$('.lightbox-load-content',plugin_element).css(
+							{
+								width:(_itemShow.width())+"px",
+								height:(_itemShow.height())+"px"
+							}
+						);
+						
+						_itemShow.fadeIn(200);								
+						
+					});
+					return false;
+				});
+				
+				
+				//---------
+			}
+		}
 
         //-------------------------
         //gera o html a ser exibido
         function getHtml (){
 
-            var _html;
+            var _html = "";
+	
+			plugin_element.css(
+			{
+				position:"fixed",
+				top:0,
+				left:0,
+				width:"100%",
+				height:"100%",
+				opacity:0,
+				display:"none",
+				overflow:"scroll",
+				zIndex:plugin_settings.zIndex
+			});
 			
-			_html = '<div class="lightbox-wrapper">';
-				_html += '<table style=" width:100%; height:100%; position:relative;">';
-					
-					if(plugin_settings.show_loader != "")
-					{
-						_html += '<div class="lightbox-loader"></div>';
-					}
-					_html += '<tr>';
-						_html += '<td class="lightbox-content" style=" padding:30px; vertical-align: middle;">';
-						_html += '<div class="lightbox-background"></div>';
-							_html += '<div style=" position:relative;" class="lightbox-load-content">';
-								//só cria o botão de fechar do lightbox caso tenha a propriedade \close_button\ na instanciação
-								if(plugin_settings.close_button != "")
-								{
-									_html += '<a href="#" class="lightbox-button-close"></a>';
-								}
-							_html += '</div>';
-						_html += '</td>';
-					_html += '</tr>';
-				_html += '</table>';
-			_html += '</div>';
+			_html += '<table style=" width:100%; height:100%; position:relative;" class="lightbox-modal">';
+				
+				if(plugin_settings.show_loader != "")
+				{
+					checkLoader("add");
+				}
+				_html += '<tr>';
+					_html += '<td class="lightbox-content" style=" padding:30px; vertical-align: middle;">';
+					_html += '<div class="lightbox-background" style="position:absolute; top:0; left:0; width:100%; height:100%;'+plugin_settings.background+';"></div>';
+						_html += '<div style="position:relative; z-index:10;" class="lightbox-load-content">';
+						_html += '</div>';
+					_html += '</td>';
+				_html += '</tr>';
+			_html += '</table>';
 
             return _html;
 

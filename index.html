@@ -11,17 +11,16 @@
 	{
 		
 		//lightbox com html simples
-		var _html = '<div style="background-color:#ffffff; width:600px; height:600px; border:1px solid red;"></div>';
+		var _html = '<div style="background-color:#ffffff; border:1px solid red;"><a id="button-load-3" href="#" style="border:1px solid #000000; padding:10px; display:inline-block; margin:30px;">abrir novo overlay</a></div>';
 		
 		$("#button").click(function(){
-			$('body').lightbox({
+			$('#modal-window').lightbox({
 								added: added,
                                 zIndex:99999,
 								destroyed: destroyed,
 								background:'background-color:rgba(0,0,0,.8);',
 								time:300,
 								width:600,
-								minWidth:980,
 								height:600,
 								type:'html',
 								contentHtml:_html,
@@ -32,7 +31,37 @@
 		});
 		
 		function added () {
-			console.log("plugin adicionado");
+			$("#button-load-3").click(function(){
+				//------------
+				
+				
+				//abrir html simples
+				/*var data = new Object;
+				data.width = 700;
+				data.height = 300;
+				data.contentHtml = '<div style="background-color:#ffffff;">conteúdo 2</div>';
+				data.item = $(this);*/
+				
+				//abre um novo item via ajax
+				var data = new Object;
+				data.width = 700;
+				data.height = 300;
+				data.ajax_sucess = ajax_sucess2;
+				data.url = "ajax-3.php";
+				data.type = 'ajax';
+				data.data = { valor: "teste"};
+				data.type_ajax					= "POST";
+				data.dataType					= "json";
+				data.show_loader = "width:32px; height:32px; display:block; background:url(ajax-loader.gif) no-repeat center center #000000; border-radius:5px; padding:10px; position:absolute; top:50%; left:50%; margin:-16px 0 0 -16px; z-index:10;";
+				data.item = $(this);//obrigatorio para saber qual foi o pai do botão que foi clicado
+				data.close_button = " background:url(bt-fechar.png) no-repeat 0 0; position:absolute; margin:10px 10px 0 0; width:25px; height:25px; display:block; background:url(bt-fechar.png) no-repeat 0 0; top: 0; right:0; z-index:10;";/**/
+
+				$('#modal-window').lightbox("hideContent",data);
+
+				
+				//------------
+				return false;	
+			});
 		}
 		
 		function destroyed () {
@@ -43,13 +72,14 @@
 		
 		//lightbox com ajax		
 		$("#button-2").click(function(){
-			$('body').lightbox({
+			$('.light-box-wrapper').lightbox({
 								background:'background-color:rgba(0,0,0,.8);',
 								time:300,
 								width:500,
 								height:300,
 								type:'ajax',
 								url:"ajax.php",
+								data:{ valor: "teste"},
 								type_ajax					: "POST",
 								dataType					: "json",
 								closeWhenClickOutside:true,
@@ -60,17 +90,56 @@
 			return false;	
 		});
 		
-		function ajax_error (event) {
-			console.log("ajax error");
+		function ajax_error (event)
+		{
+			//console.log("ajax error");
 		}
 		
-		function ajax_sucess (event) {
-			console.log("ajax sucess");
-			//alert(event.data)
+		function ajax_sucess (event)
+		{
+			$("#bt-overlay").click(function()
+			{
+				//vamos manter os dados originais do plugin e alguns atriutos
+				var data = new Object;
+				data.width = 500;
+				data.height = 500;
+				data.data = { valor: "Este é um valor qualquer"};
+				data.ajax_sucess = ajax_sucess2;
+				data.url = "ajax-2.php";
+				data.item = $(this);//obrigatorio para saber qual foi o pai do botão que foi clicado
+				data.close_button = " background:url(bt-fechar.png) no-repeat 0 0; position:absolute; margin:10px 10px 0 0; width:25px; height:25px; display:block; background:url(bt-fechar.png) no-repeat 0 0; top: 0; right:0; z-index:10;";
+				data.show_loader="width:32px; height:32px; display:block; background:url(ajax-loader.gif) no-repeat center center #000000; border-radius:5px; padding:10px; position:absolute; top:50%; left:50%; margin:-16px 0 0 -16px; z-index:10;";
+				$('.light-box-wrapper').lightbox("hideContent",data);
+				
+			});
 		}
 		
-		function ajax_complete (event) {
-			console.log("ajax complete");
+		function ajax_sucess2 (event){
+			
+			$("#bt-overlay-2").click(function()
+			{				
+				//vamos manter os dados originais do plugin e alguns atriutos
+				var data = new Object;
+				data.width = 700;
+				data.height = 300;
+				data.ajax_sucess = ajax_sucess3;
+				data.url = "ajax-3.php";
+				data.item = $(this);//obrigatorio para saber qual foi o pai do botão que foi clicado
+				data.close_button = " background:url(bt-fechar.png) no-repeat 0 0; position:absolute; margin:10px 10px 0 0; width:25px; height:25px; display:block; background:url(bt-fechar.png) no-repeat 0 0; top: 0; right:0; z-index:10;";
+
+				$('.light-box-wrapper').lightbox("hideContent",data);
+				
+			});
+		}
+		
+		function ajax_sucess3 (event)
+		{
+			//console.log("ajax complete 3");
+		}
+		
+		function ajax_complete (event)
+		{
+			//console.log("ajax complete");
 		}
 		
 		//-----------------------------------------
