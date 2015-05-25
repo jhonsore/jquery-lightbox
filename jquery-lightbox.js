@@ -12,6 +12,7 @@
 				return _obj.each(function(){	_init(_obj, options);});
 			},
             destroy :									function( options ){ 			return this.each(function(){	_destroy(this,options);});},
+			remove :									function( options ){ 			return this.each(function(){	_remove(this,options);});},
 			hideContent :								function( options ){ 			return this.each(function(){	_hideContent(this,options);});},
 			showContent :								function( options ){ 			return this.each(function(){	_showContent(this,options);});}
         };
@@ -34,6 +35,7 @@
             type_ajax					: "",//GET ou POST
             dataType					: "",//estrutura a ser retornada json ou ""
 			data						: "",//dados a serem enviados quando dataType == json
+			closeWithDelay				: 0,
             added						: function() {},//plugin adicionando
             destroyed					: function(){},//plugin removido
             ajax_error					: function(){},//erro no ajax
@@ -73,7 +75,6 @@
             //adiciona o css na página
 			jQuery(document.body).css('overflow', 'hidden');
 			
-			
             //adiciona o html do lightbox
             plugin_element.append(getHtml ());
 			
@@ -104,6 +105,12 @@
                     }
                 );
             }
+			
+			//fecha plugin com delay
+			if(plugin_settings.closeWithDelay > 0)
+			{
+				var interval = setTimeout(function(){ removeLightbox (); clearTimeout(interval);},4000);
+			}
 
             //botão de fechar
             $(".lightbox-button-close",$(plugin_settings.object)).click(function()
@@ -118,11 +125,19 @@
         //remove o plugin com uma naimação fade out
         function removeLightbox ()
         {
-            $(plugin_settings.object).fadeOut(plugin_settings.time,function(){ destroy();});
+            $(plugin_settings.object).fadeOut(plugin_settings.time,function(){ _destroy();});
         }
+		
+		function _remove (_item)
+		{
+			var _newData = $(_item).data();
+			plugin_settings = _newData;
+			plugin_element = $(_item);
+			removeLightbox ();
+		}	
 
         //destroi o plugin
-        function destroy ()
+        function _destroy ()
         {
 			$(plugin_settings.object).data(null);
             $(plugin_settings.object).remove();

@@ -9,9 +9,54 @@
 	jQuery(document).ready(
 	function()
 	{
+		var _html;
+		
+		//------------------------------
+		$("#button-4").click(function(){
+			_html = '<div style="background-color:#ffffff; border:1px solid red;"><div style="padding:40px 20px;">Após 6 segundo o método para remover o overlay será chamado</div></div>';
+
+			$('#element-2').lightbox({
+                                zIndex:99999,
+								added: itemAdded,
+								destroyed: destroyed,
+								background:'background-color:rgba(0,0,0,.8);',
+								time:300,
+								width:300,
+								height:300,
+								type:'html',
+								contentHtml:_html,
+								closeWhenClickOutside:false,
+								closeWithDelay:6
+								});
+			return false;	
+		});
+		
+		function itemAdded ()
+		{
+			var interval = setTimeout(function(){ $('#element-2').lightbox("remove"); clearTimeout(interval);},4000);
+		}
+		
+		//------------------------------
+		$("#button-3").click(function(){
+			_html = '<div style="background-color:#ffffff; border:1px solid red;"><div style="padding:40px 20px;">Este overlay irá fechar após 4 segundos</div></div>';
+
+			$('#element').lightbox({
+                                zIndex:99999,
+								destroyed: destroyed,
+								background:'background-color:rgba(0,0,0,.8);',
+								time:300,
+								width:300,
+								height:300,
+								type:'html',
+								contentHtml:_html,
+								closeWhenClickOutside:false,
+								closeWithDelay:4
+								});
+			return false;	
+		});
 		
 		//lightbox com html simples
-		var _html = '<div style="background-color:#ffffff; border:1px solid red;"><a id="button-load-3" href="#" style="border:1px solid #000000; padding:10px; display:inline-block; margin:30px;">abrir novo overlay</a></div>';
+		_html = '<div style="background-color:#ffffff; border:1px solid red;"><a id="button-load-3" href="#" style="border:1px solid #000000; padding:10px; display:inline-block; margin:30px;">abrir novo overlay</a></div>';
 		
 		$("#button").click(function(){
 			$('#modal-window').lightbox({
@@ -31,10 +76,9 @@
 		});
 		
 		function added () {
+						
 			$("#button-load-3").click(function(){
-				//------------
-				
-				
+				//------------				
 				//abrir html simples
 				/*var data = new Object;
 				data.width = 700;
@@ -153,8 +197,10 @@
 
 <body>
 <div class="center">
-<a href="#" id="button" style="border:1px solid black; padding:5px 10px; margin:50px 0 0 50px; display:inline-block; width:100px; text-align:center; text-decoration:none; font-family:Arial, Helvetica, sans-serif;">HTML</a>
-<a href="#" id="button-2" style="border:1px solid black; padding:5px 10px; margin:50px 0 0 50px; display:inline-block; width:100px; text-align:center; text-decoration:none; font-family:Arial, Helvetica, sans-serif;">AJAX</a>
+<a href="#" id="button" style="border:1px solid black; padding:5px 10px; margin:50px 0 0 0; display:inline-block; width:100px; text-align:center; text-decoration:none; font-family:Arial, Helvetica, sans-serif;">HTML</a>
+<a href="#" id="button-2" style="border:1px solid black; padding:5px 10px; margin:50px 0 0 20px; display:inline-block; width:100px; text-align:center; text-decoration:none; font-family:Arial, Helvetica, sans-serif;">AJAX</a>
+<a href="#" id="button-3" style="border:1px solid black; padding:5px 10px; margin:50px 0 0 20px; display:inline-block; width:300px; text-align:center; text-decoration:none; font-family:Arial, Helvetica, sans-serif;">Abre e remove overlay após 4 segundos</a>
+<a href="#" id="button-4" style="border:1px solid black; padding:5px 10px; margin:50px 0 0 20px; display:inline-block; width:200px; text-align:center; text-decoration:none; font-family:Arial, Helvetica, sans-serif;">Chama método interno</a>
 	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat erat sagittis tortor condimentum, in gravida nisl iaculis. Vivamus ligula arcu, aliquet in purus non, dapibus placerat tortor. Sed lacinia posuere diam ut efficitur. Nulla at sollicitudin nunc. Etiam purus leo, posuere et enim in, tincidunt bibendum ex. Vivamus a massa vel turpis mollis suscipit. Curabitur eget congue neque. Sed eu varius leo, condimentum placerat dolor. Etiam vitae est sodales, varius ex sed, maximus magna.</p>
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat erat sagittis tortor condimentum, in gravida nisl iaculis. Vivamus ligula arcu, aliquet in purus non, dapibus placerat tortor. Sed lacinia posuere diam ut efficitur. Nulla at sollicitudin nunc. Etiam purus leo, posuere et enim in, tincidunt bibendum ex. Vivamus a massa vel turpis mollis suscipit. Curabitur eget congue neque. Sed eu varius leo, condimentum placerat dolor. Etiam vitae est sodales, varius ex sed, maximus magna.</p>
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat erat sagittis tortor condimentum, in gravida nisl iaculis. Vivamus ligula arcu, aliquet in purus non, dapibus placerat tortor. Sed lacinia posuere diam ut efficitur. Nulla at sollicitudin nunc. Etiam purus leo, posuere et enim in, tincidunt bibendum ex. Vivamus a massa vel turpis mollis suscipit. Curabitur eget congue neque. Sed eu varius leo, condimentum placerat dolor. Etiam vitae est sodales, varius ex sed, maximus magna.</p>
