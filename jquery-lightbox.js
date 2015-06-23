@@ -170,7 +170,7 @@
 					_html.css({width:plugin_settings.width, height:plugin_settings.height});
 					
 					$(".lightbox-content .lightbox-load-content",$(plugin_settings.object)).append(_html);
-					addCloseButton(_html);
+					
 					$('.lightbox-content .lightbox-load-content',$(plugin_settings.object)).css(
 						{
 							width:(plugin_settings.width)+"px",
@@ -276,33 +276,7 @@
 						);
 						
 						addCloseButton (_html);
-						
-						if(plugin_settings.close_button != "")
-						{
-							/*$(".lightbox-button-close", _html).click(function()
-							{
-								_html.fadeOut(200,function()
-								{
-									_html.remove();
-									
-									var count = ($('.lightbox-load-content',$obj).children().length)-1;
-									
-									var _itemShow = $('.content-loaded',$obj).eq(count);
-									
-									$('.lightbox-load-content',$obj).css(
-										{
-											width:(_itemShow.width())+"px",
-											height:(_itemShow.height())+"px"
-										}
-									);
-									
-									_itemShow.fadeIn(200);								
-									
-								});
-								return false;
-							});*/
-						}
-					   
+									   
 						//--------------
 						plugin_settings.ajax_sucess.call(this, {data:data});
 						
@@ -352,24 +326,32 @@
 				//---------
 				$(".lightbox-button-close", _html).click(function()
 				{
-					_html.fadeOut(200,function()
+					var count = ($('.lightbox-load-content',plugin_element).children().length)-1;
+					if(count == 0)
 					{
-						_html.remove();
-						
-						var count = ($('.lightbox-load-content',plugin_element).children().length)-1;
-						
-						var _itemShow = $('.content-loaded',plugin_element).eq(count);
-						
-						$('.lightbox-load-content',plugin_element).css(
-							{
-								width:(_itemShow.width())+"px",
-								height:(_itemShow.height())+"px"
-							}
-						);
-						
-						_itemShow.fadeIn(200);								
-						
-					});
+						removeLightbox ();
+					}
+					else
+					{
+						_html.fadeOut(200,function()
+						{
+							_html.remove();
+							count = ($('.lightbox-load-content',plugin_element).children().length)-1;
+							
+							
+							var _itemShow = $('.content-loaded',plugin_element).eq(count);
+							
+							$('.lightbox-load-content',plugin_element).css(
+								{
+									width:(_itemShow.width())+"px",
+									height:(_itemShow.height())+"px"
+								}
+							);
+							
+							_itemShow.fadeIn(200);								
+							
+						});
+					}
 					return false;
 				});
 				
