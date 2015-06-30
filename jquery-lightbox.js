@@ -341,8 +341,10 @@
 			if(plugin_settings.close_button != "")
 			{
 				_html.append('<a href="#" class="lightbox-button-close" style="'+plugin_settings.close_button+'"></a>');
-				
-				//---------
+			}
+
+			if($(".lightbox-button-close", _html).size()>0)
+			{
 				$(".lightbox-button-close", _html).click(function()
 				{
 					var count = ($('.lightbox-load-content',plugin_element).children().length)-1;
@@ -356,26 +358,23 @@
 						{
 							_html.remove();
 							count = ($('.lightbox-load-content',plugin_element).children().length)-1;
-							
-							
+
+
 							var _itemShow = $('.content-loaded',plugin_element).eq(count);
-							
+
 							$('.lightbox-load-content',plugin_element).css(
 								{
 									width:(_itemShow.width())+"px",
 									height:(_itemShow.height())+"px"
 								}
 							);
-							
-							_itemShow.fadeIn(200);								
-							
+
+							_itemShow.fadeIn(200);
+
 						});
 					}
 					return false;
 				});
-				
-				
-				//---------
 			}
 		}
 

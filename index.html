@@ -56,7 +56,7 @@
 		});
 		
 		//lightbox com html simples
-		var _html1 = '<div style="background-color:#ffffff; border:1px solid red;"><a id="button-load-3" href="#" style="border:1px solid #000000; padding:10px; display:inline-block; margin:30px;">abrir novo overlay</a></div>';
+		var _html1 = '<div style="background-color:#ffffff; border:1px solid red;"><a href="#" class="lightbox-button-close"style="border:1px solid #000000; padding:10px; display:inline-block; margin:30px; position:absolute; top:0; right:0">X</a><a id="button-load-3" href="#" style="border:1px solid #000000; padding:10px; display:inline-block; margin:30px;">abrir novo overlay</a></div>';
 		
 		$("#button").click(function(){
 			$('#modal-window').lightbox({
@@ -69,8 +69,8 @@
 								/*height:600,*/
 								type:'html',
 								contentHtml:_html1,
-								closeWhenClickOutside:false,
-								close_button:" background:url(bt-fechar.png) no-repeat 0 0; position:absolute; margin:10px 10px 0 0; width:25px; height:25px; display:block; background:url(bt-fechar.png) no-repeat 0 0; top: 0; right:0; z-index:10;"
+								closeWhenClickOutside:false/*,
+								close_button:" background:url(bt-fechar.png) no-repeat 0 0; position:absolute; margin:10px 10px 0 0; width:25px; height:25px; display:block; background:url(bt-fechar.png) no-repeat 0 0; top: 0; right:0; z-index:10;"*/
 								});
 			return false;	
 		});
