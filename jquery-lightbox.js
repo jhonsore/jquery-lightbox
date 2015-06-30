@@ -27,7 +27,7 @@
             type						: 'html',//ajax or html
             time						: 300,//tempo para abrir e fechar o overlay
             width						: 300,//tamanho do objeto central
-            height						: 300,//altura do objeto central
+            height						: null,//altura do objeto central
             show_loader					: "",//objeto de carregando
             closeWhenClickOutside		: false,//fechar o plugin quando for clicado na parte de fora
             close_button				: "",//css do botão de fechar
@@ -78,6 +78,9 @@
             //adiciona o html do lightbox
             plugin_element.append(getHtml ());
 			
+			//revela o lightbox
+            $(plugin_settings.object).show();
+			
             //
             if(plugin_settings.type == "ajax")
             {
@@ -93,7 +96,6 @@
 			$(plugin_settings.object).data(plugin_settings);
 			
             //revela o lightbox
-            $(plugin_settings.object).show();
             $(plugin_settings.object).animate({opacity:1},plugin_settings.time);
 
             //fecha o lightbox caso ocorra um clique fora do box central
@@ -166,20 +168,26 @@
                     //adiciona o html
 					var _html = (plugin_settings.dataType == "json") ? data.html : data;
 					_html = $(_html);
-					_html.addClass("content-loaded");
-					_html.css({width:plugin_settings.width, height:plugin_settings.height});
 					
-					$(".lightbox-content .lightbox-load-content",$(plugin_settings.object)).append(_html);
+					var _div = $("<div></div>");
+					_div.addClass("content-loaded");
+					
+					$(".lightbox-content .lightbox-load-content",$(plugin_settings.object)).append(_div);
+					_div.append(_html);
+					
+					var _height = (plugin_settings.height) ? plugin_settings.height : _div.outerHeight(true);
+					
+					_html.css({width:plugin_settings.width, height:_height});					
 					
 					$('.lightbox-content .lightbox-load-content',$(plugin_settings.object)).css(
 						{
 							width:(plugin_settings.width)+"px",
-							height:(plugin_settings.height)+"px",
+							height:(_height)+"px",
 							margin:"0 auto"
 						}
 					);
 										
-					addCloseButton (_html);
+					addCloseButton (_div);
 
                     //--------------
                     plugin_settings.ajax_sucess.call(this, {data:data});
@@ -211,22 +219,27 @@
         //insere o conteúdo do html
         function insertHtml ()
         {
-
             //adiciona o html
 			var _html = $(plugin_settings.contentHtml);
-			_html.addClass("content-loaded");
-			$(".lightbox-content .lightbox-load-content",$(plugin_settings.object)).append(_html);
-			addCloseButton(_html);
-			_html.css({width:plugin_settings.width, height:plugin_settings.height});
+			var _div = $("<div></div>");
+			_div.addClass("content-loaded");
+			
+			$(".lightbox-content .lightbox-load-content",$(plugin_settings.object)).append(_div);
+			_div.append(_html);
+			
+			addCloseButton(_div);
+						
+			var _height = (plugin_settings.height) ? plugin_settings.height : _div.outerHeight(true);
+			
+			_html.css({width:plugin_settings.width, height:_height});
 			
 			$('.lightbox-content .lightbox-load-content',$(plugin_settings.object)).css(
 				{
 					width:(plugin_settings.width)+"px",
-					height:(plugin_settings.height)+"px",
+					height:(_height)+"px",
 					margin:"0 auto"
 				}
 			);
-
         }
 
         //----------------------
@@ -259,23 +272,29 @@
 					},
 					success: function (data)
 					{					
-						//adiciona o html
-						
+						//adiciona o html						
 						var _html = (plugin_settings.dataType == "json") ? data.html : data;
 						_html = $(_html);
+						var _div = $("<div></div>");
+						_div.addClass("content-loaded");
+						_div.append(_html);
+						
 						_html.css({opacity:0});
-						$(".lightbox-load-content",$obj).append(_html);
-						_html.addClass("content-loaded");
-						_html.css({width:plugin_settings.width, height:plugin_settings.height});
+						
+						$(".lightbox-load-content",$obj).append(_div);
+						
+						var _height = (plugin_settings.height) ? plugin_settings.height : _div.outerHeight(true);
+						
+						_html.css({width:plugin_settings.width, height:_height});
 						
 						$('.lightbox-load-content',$obj).css(
 							{
 								width:(plugin_settings.width)+"px",
-								height:(plugin_settings.height)+"px"
+								height:(_height)+"px"
 							}
 						);
 						
-						addCloseButton (_html);
+						addCloseButton (_div);
 									   
 						//--------------
 						plugin_settings.ajax_sucess.call(this, {data:data});

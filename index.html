@@ -22,7 +22,7 @@
 								background:'background-color:rgba(0,0,0,.8);',
 								time:300,
 								width:300,
-								height:300,
+								/*height:300,*/
 								type:'html',
 								contentHtml:_html,
 								closeWhenClickOutside:false,
@@ -46,7 +46,7 @@
 								background:'background-color:rgba(0,0,0,.8);',
 								time:300,
 								width:300,
-								height:300,
+								/*height:300,*/
 								type:'html',
 								contentHtml:_html,
 								closeWhenClickOutside:false,
@@ -56,7 +56,7 @@
 		});
 		
 		//lightbox com html simples
-		_html = '<div style="background-color:#ffffff; border:1px solid red;"><a id="button-load-3" href="#" style="border:1px solid #000000; padding:10px; display:inline-block; margin:30px;">abrir novo overlay</a></div>';
+		var _html1 = '<div style="background-color:#ffffff; border:1px solid red;"><a id="button-load-3" href="#" style="border:1px solid #000000; padding:10px; display:inline-block; margin:30px;">abrir novo overlay</a></div>';
 		
 		$("#button").click(function(){
 			$('#modal-window').lightbox({
@@ -66,9 +66,9 @@
 								background:'background-color:rgba(0,0,0,.8);',
 								time:300,
 								width:600,
-								height:600,
+								/*height:600,*/
 								type:'html',
-								contentHtml:_html,
+								contentHtml:_html1,
 								closeWhenClickOutside:false,
 								close_button:" background:url(bt-fechar.png) no-repeat 0 0; position:absolute; margin:10px 10px 0 0; width:25px; height:25px; display:block; background:url(bt-fechar.png) no-repeat 0 0; top: 0; right:0; z-index:10;"
 								});
@@ -89,7 +89,7 @@
 				//abre um novo item via ajax
 				var data = new Object;
 				data.width = 700;
-				data.height = 300;
+				data.height = 300;/**/
 				data.ajax_sucess = ajax_sucess2;
 				data.url = "ajax-3.php";
 				data.type = 'ajax';
@@ -120,7 +120,7 @@
 								background:'background-color:rgba(0,0,0,.8);',
 								time:300,
 								width:500,
-								height:300,
+								/*height:300,*/
 								type:'ajax',
 								url:"ajax.php",
 								close_button:" background:url(bt-fechar.png) no-repeat 0 0; position:absolute; margin:10px 10px 0 0; width:25px; height:25px; display:block; background:url(bt-fechar.png) no-repeat 0 0; top: 0; right:0; z-index:10;",
@@ -147,7 +147,7 @@
 				//vamos manter os dados originais do plugin e alguns atriutos
 				var data = new Object;
 				data.width = 500;
-				data.height = 500;
+				/*data.height = 500;*/
 				data.data = { valor: "Este é um valor qualquer"};
 				data.ajax_sucess = ajax_sucess2;
 				data.url = "ajax-2.php";
@@ -166,7 +166,7 @@
 				//vamos manter os dados originais do plugin e alguns atriutos
 				var data = new Object;
 				data.width = 700;
-				data.height = 300;
+				/*data.height = 300;*/
 				data.ajax_sucess = ajax_sucess3;
 				data.url = "ajax-3.php";
 				data.item = $(this);//obrigatorio para saber qual foi o pai do botão que foi clicado
