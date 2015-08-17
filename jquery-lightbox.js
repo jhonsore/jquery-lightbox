@@ -175,13 +175,20 @@
 					$(".lightbox-content .lightbox-load-content",$(plugin_settings.object)).append(_div);
 					_div.append(_html);
 					
-					var _height = (plugin_settings.height) ? plugin_settings.height : _div.outerHeight(true);
-					
-					_html.css({width:plugin_settings.width, height:_height});					
+					_div.css({width:plugin_settings.width});					
 					
 					$('.lightbox-content .lightbox-load-content',$(plugin_settings.object)).css(
 						{
-							width:(plugin_settings.width)+"px",
+							width:(plugin_settings.width)+"px"
+						}
+					);
+					
+					var _height = (plugin_settings.height) ? plugin_settings.height : _div.outerHeight(true);
+					
+					_div.css({ height:_height});					
+					
+					$('.lightbox-content .lightbox-load-content',$(plugin_settings.object)).css(
+						{
 							height:(_height)+"px",
 							margin:"0 auto"
 						}
@@ -228,18 +235,27 @@
 			_div.append(_html);
 			
 			addCloseButton(_div);
-						
-			var _height = (plugin_settings.height) ? plugin_settings.height : _div.outerHeight(true);
-			
-			_html.css({width:plugin_settings.width, height:_height});
+									
+			_html.css({width:plugin_settings.width});
 			
 			$('.lightbox-content .lightbox-load-content',$(plugin_settings.object)).css(
 				{
-					width:(plugin_settings.width)+"px",
+					width:(plugin_settings.width)+"px"
+				}
+			);
+			
+			var _height = (plugin_settings.height) ? plugin_settings.height : _div.outerHeight(true);
+			
+			_html.css({ height:_height});
+			
+			$('.lightbox-content .lightbox-load-content',$(plugin_settings.object)).css(
+				{
 					height:(_height)+"px",
 					margin:"0 auto"
 				}
 			);
+
+			
         }
 
         //----------------------
@@ -282,14 +298,21 @@
 						_html.css({opacity:0});
 						
 						$(".lightbox-load-content",$obj).append(_div);
-						
-						var _height = (plugin_settings.height) ? plugin_settings.height : _div.outerHeight(true);
-						
-						_html.css({width:plugin_settings.width, height:_height});
+												
+						_html.css({width:plugin_settings.width});
 						
 						$('.lightbox-load-content',$obj).css(
 							{
-								width:(plugin_settings.width)+"px",
+								width:(plugin_settings.width)+"px"
+							}
+						);
+						
+						var _height = (plugin_settings.height) ? plugin_settings.height : _div.outerHeight(true);
+						
+						_html.css({height:_height});
+						
+						$('.lightbox-load-content',$obj).css(
+							{
 								height:(_height)+"px"
 							}
 						);
