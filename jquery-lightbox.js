@@ -30,7 +30,6 @@
             height						: null,//altura do objeto central
             show_loader					: "",//objeto de carregando
             closeWhenClickOutside		: false,//fechar o plugin quando for clicado na parte de fora
-            close_button				: "",//css do botão de fechar
             url							: "",//caminho do arquivo a ser carregado
             type_ajax					: "",//GET ou POST
             dataType					: "",//estrutura a ser retornada json ou ""
@@ -40,7 +39,8 @@
             destroyed					: function(){},//plugin removido
             ajax_error					: function(){},//erro no ajax
             ajax_sucess					: function(){},//sucesso ajax
-            ajax_complete				: function(){}//ajax completo
+            ajax_complete				: function(){},//ajax completo
+			htmlAdded					: function(){}
         };
 
         var plugin_settings;
@@ -88,7 +88,8 @@
             }
             else
             {
-                insertHtml();
+				var _html = $(plugin_settings.contentHtml);
+                insertHtml({html:_html});
             }
 			
             plugin_settings.added.call();
@@ -175,20 +176,13 @@
 					$(".lightbox-content .lightbox-load-content",$(plugin_settings.object)).append(_div);
 					_div.append(_html);
 					
-					_div.css({width:plugin_settings.width});					
-					
-					$('.lightbox-content .lightbox-load-content',$(plugin_settings.object)).css(
-						{
-							width:(plugin_settings.width)+"px"
-						}
-					);
-					
 					var _height = (plugin_settings.height) ? plugin_settings.height : _div.outerHeight(true);
 					
-					_div.css({ height:_height});					
+					_html.css({width:plugin_settings.width, height:_height});					
 					
 					$('.lightbox-content .lightbox-load-content',$(plugin_settings.object)).css(
 						{
+							width:(plugin_settings.width)+"px",
 							height:(_height)+"px",
 							margin:"0 auto"
 						}
@@ -224,10 +218,10 @@
         }
 
         //insere o conteúdo do html
-        function insertHtml ()
+        function insertHtml (__data__)
         {
             //adiciona o html
-			var _html = $(plugin_settings.contentHtml);
+			var _html = $(__data__.html);
 			var _div = $("<div></div>");
 			_div.addClass("content-loaded");
 			
@@ -235,27 +229,19 @@
 			_div.append(_html);
 			
 			addCloseButton(_div);
-									
+						
+			var _height = (plugin_settings.height) ? plugin_settings.height : _div.outerHeight(true);
+			
 			_html.css({width:plugin_settings.width});
 			
 			$('.lightbox-content .lightbox-load-content',$(plugin_settings.object)).css(
 				{
-					width:(plugin_settings.width)+"px"
-				}
-			);
-			
-			var _height = (plugin_settings.height) ? plugin_settings.height : _div.outerHeight(true);
-			
-			_html.css({ height:_height});
-			
-			$('.lightbox-content .lightbox-load-content',$(plugin_settings.object)).css(
-				{
-					height:(_height)+"px",
+					width:(plugin_settings.width)+"px",
 					margin:"0 auto"
 				}
 			);
 
-			
+			plugin_settings.htmlAdded.call();
         }
 
         //----------------------
@@ -298,21 +284,14 @@
 						_html.css({opacity:0});
 						
 						$(".lightbox-load-content",$obj).append(_div);
-												
-						_html.css({width:plugin_settings.width});
-						
-						$('.lightbox-load-content',$obj).css(
-							{
-								width:(plugin_settings.width)+"px"
-							}
-						);
 						
 						var _height = (plugin_settings.height) ? plugin_settings.height : _div.outerHeight(true);
 						
-						_html.css({height:_height});
+						_html.css({width:plugin_settings.width, height:_height});
 						
 						$('.lightbox-load-content',$obj).css(
 							{
+								width:(plugin_settings.width)+"px",
 								height:(_height)+"px"
 							}
 						);
@@ -333,7 +312,8 @@
 			}
 			else//type == html
 			{
-				insertHtml ();
+				var _html = $data.html;
+				insertHtml ({html:_html});
 			}
 
 		}
@@ -360,15 +340,10 @@
 		//----------------
 		//adiciona o botão de fechar
 		function addCloseButton (_html) {
-			//só cria o botão de fechar do lightbox caso tenha a propriedade \close_button\ na instanciação
-			if(plugin_settings.close_button != "")
-			{
-				_html.append('<a href="#" class="lightbox-button-close" style="'+plugin_settings.close_button+'"></a>');
-			}
 
 			if($(".lightbox-button-close", _html).size()>0)
 			{
-				$(".lightbox-button-close", _html).click(function()
+				$(".lightbox-button-close", _html).unbind('click').click(function()
 				{
 					var count = ($('.lightbox-load-content',plugin_element).children().length)-1;
 					if(count == 0)
