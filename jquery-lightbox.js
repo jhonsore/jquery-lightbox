@@ -112,7 +112,7 @@
 			//fecha plugin com delay
 			if(plugin_settings.closeWithDelay > 0)
 			{
-				var interval = setTimeout(function(){ removeLightbox (); clearTimeout(interval);},4000);
+				var interval = setTimeout(function(){ removeLightbox (); clearTimeout(interval);},(plugin_settings.closeWithDelay*1000));
 			}
 
             //botão de fechar
