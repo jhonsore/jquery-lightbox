@@ -94,7 +94,6 @@
 				data.dataType					= "json";
 				data.show_loader = "width:32px; height:32px; display:block; background:url(ajax-loader.gif) no-repeat center center #000000; border-radius:5px; padding:10px; position:absolute; top:50%; left:50%; margin:-16px 0 0 -16px; z-index:10;";
 				data.item = $(this);//obrigatorio para saber qual foi o pai do botão que foi clicado
-				data.close_button = " background:url(bt-fechar.png) no-repeat 0 0; position:absolute; margin:10px 10px 0 0; width:25px; height:25px; display:block; background:url(bt-fechar.png) no-repeat 0 0; top: 0; right:0; z-index:10;";/**/
 
 				$('#modal-window').lightbox("hideContent",data);
 
@@ -118,7 +117,6 @@
 								width:500,
 								type:'ajax',
 								url:"ajax.php",
-								close_button:" background:url(bt-fechar.png) no-repeat 0 0; position:absolute; margin:10px 10px 0 0; width:25px; height:25px; display:block; background:url(bt-fechar.png) no-repeat 0 0; top: 0; right:0; z-index:10;",
 								data:{ valor: "teste"},
 								type_ajax					: "POST",
 								dataType					: "json",
