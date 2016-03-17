@@ -13,8 +13,7 @@
 			},
 			destroy :									function( options ){ 			return this.each(function(){	_destroy(this,options);});},
 			remove :									function( options ){ 			return this.each(function(){	_remove(this,options);});},
-			hideContent :								function( options ){ 			return this.each(function(){	_hideContent(this,options);});},
-			showContent :								function( options ){ 			return this.each(function(){	_showContent(this,options);});}
+			hideContent :								function( options ){ 			return this.each(function(){	_hideContent(this,options);});}
 		};
 
 		//----------------------------------------------------------------------
@@ -370,12 +369,6 @@
 
 				_html.animate({opacity:1},200);
 			}
-
-		}
-
-		//----------------------
-		//mostra o conteúdo
-		function _showContent ( $obj, $property ) {
 
 		}
 

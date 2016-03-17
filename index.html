@@ -2,31 +2,41 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Plugin</title>
+<title>Jquery Lightbox</title>
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300italic,400italic,600,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="reset.css">
+
+	<!-- http://jmblog.github.io/color-themes-for-google-code-prettify/atelier-lakeside-dark/ -->
+	<link rel="stylesheet" type="text/css" href="css/atelier-lakeside-dark.css">
+
 <script type="text/javascript" src="jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="jquery-lightbox.js"></script>
+	<script type="text/javascript" src="external/google-code-prettify/prettify.js"></script>
 <script type="text/javascript">
 	jQuery(document).ready(
 	function()
 	{
+
+		prettyPrint();
+
+		//
 		var _html;
 		
 		//------------------------------
 		$("#button-4").click(function(){
-			_html = '<div style="background-color:#ffffff; border:1px solid red;"><div style="padding:40px 20px;">Após 6 segundo o método para remover o overlay será chamado</div></div>';
+			var _html = '<div class="wrapper-lightbox"><div style="padding:40px 20px;">After 6 seconds it will be removed calling an internal method</div></div>';
 
 			$('#element-2').lightbox({
-                                zIndex:99999,
-								added: itemAdded,
-								destroyed: destroyed,
-								background:'background-color:rgba(0,0,0,.8);',
-								time:300,
-								width:300,
-								type:'html',
-								contentHtml:_html,
-								closeWhenClickOutside:false,
-								closeWithDelay:6
-								});
+				zIndex:99999,
+				added: function(){itemAdded ();},
+				destroyed: function(){},
+				background:'background-color:rgba(0,0,0,.8);',
+				time:300,
+				width:300,
+				type:'html',
+				contentHtml:_html,
+				closeWhenClickOutside:false
+				});
 			return false;	
 		});
 		
@@ -37,25 +47,48 @@
 		
 		//------------------------------
 		$("#button-3").click(function(){
-			_html = '<div style="background-color:#ffffff; border:1px solid red;"><div style="padding:40px 20px;">Este overlay irá fechar após 4 segundos</div></div>';
+			var _html = '<div class="wrapper-lightbox"><div class="wrapper-lightbox-inner">I will be closed after 4 seconds</div></div>';
 
 			$('#element').lightbox({
-                                zIndex:99999,
-								destroyed: destroyed,
-								background:'background-color:rgba(0,0,0,.8);',
-								time:300,
-								width:300,
-								type:'html',
-								contentHtml:_html,
-								closeWhenClickOutside:false,
-								closeWithDelay:4
-								});
+				zIndex:99999,
+				destroyed: destroyed,
+				background:'background-color:rgba(0,0,0,.8);',
+				time:300,
+				width:400,
+				type:'html',
+				contentHtml:_html,
+				closeWhenClickOutside:false,
+				closeWithDelay:4
+				});
 			return false;	
 		});
 		
 		//lightbox com html simples
-		var _html1 = '<div style="background-color:#ffffff; border:1px solid red;"><a href="#" class="lightbox-button-close"style="border:1px solid #000000; padding:10px; display:inline-block; margin:30px; position:absolute; top:0; right:0">X</a><a id="button-load-3" href="#" style="border:1px solid #000000; padding:10px; display:inline-block; margin:30px;">abrir novo overlay</a><br><br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tincidunt, metus non faucibus dignissim, ante neque pulvinar neque, eget tristique quam libero at enim. Nullam vel eros ut sem volutpat ultrices et sit amet sapien. Maecenas tincidunt posuere ligula sed efficitur. In pellentesque enim eget nunc bibendum, quis dignissim dui hendrerit. Ut id pharetra quam. Nunc a tincidunt nisi. Vestibulum in molestie metus, sed imperdiet ligula. Nunc suscipit tellus non ultrices convallis. Etiam pharetra fringilla arcu.Vestibulum eleifend sapien lacus, et sollicitudin eros dictum eu. Sed libero erat, dictum vel tellus vitae, gravida auctor ipsum. Vivamus lacus risus, semper quis dignissim id, vestibulum non nisl. Sed ipsum diam, viverra quis sagittis eu, rhoncus et nisi. Etiam eu tristique mauris, quis sodales nulla. Cras id posuere mauris. Nullam id sapien nec felis sollicitudin tincidunt. Donec tincidunt arcu neque, at tincidunt est accumsan non. Proin posuere massa id nisl posuere convallis. Integer vel sem placerat, ullamcorper lectus non, porta massa. Vestibulum vel leo velit. Aliquam eget vestibulum dui, pulvinar facilisis diam. Curabitur scelerisque, orci at aliquam feugiat, ligula orci pulvinar metus, ut porttitor orci ipsum quis leo.Nunc viverra, urna a finibus tempor, metus sapien pulvinar ligula, sed rutrum ante sapien eget urna. Aenean fringilla viverra neque, at semper eros sollicitudin at. Nunc consectetur efficitur sem, sed facilisis nulla pretium bibendum. Integer sed neque eget dolor rutrum rhoncus. Morbi consectetur nibh diam, in aliquet nisl elementum pharetra. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Quisque auctor fermentum vehicula.Sed convallis porttitor magna nec blandit. Aliquam eget faucibus velit. Cras bibendum, lectus in iaculis dapibus, mauris metus laoreet sem, non vestibulum justo lacus eu felis. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Morbi vel tellus odio. Curabitur ultrices tortor semper purus interdum, id tincidunt erat viverra. Donec at augue dapibus, dapibus tellus non, pretium lectus. Morbi pharetra elementum malesuada. Nulla viverra, ipsum sed lobortis faucibus, nisl metus iaculis nisi, a fermentum risus justo eget odio. Duis et dui quis odio tincidunt accumsan a ac nisl. Maecenas vulputate id tortor et venenatis. Phasellus ac magna egestas, vestibulum orci sed, posuere nibh.Nulla imperdiet rutrum ligula. Suspendisse gravida justo vel massa lacinia gravida. Phasellus id nulla elementum tellus semper accumsan eget non urna. Cras luctus lorem non nisl porttitor dapibus eu ac eros. Nullam tempus risus a justo tempor fringilla. Proin turpis felis, tempor quis blandit nec, congue quis felis. Pellentesque id mattis metus. Mauris eleifend faucibus orci a gravida. Duis ut leo pellentesque, placerat ante eu, commodo ante.</div>';
-		
+
+		var _html1 = '<div class="wrapper-lightbox"><div class="wrapper-lightbox-inner">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tincidunt, metus non faucibus dignissim, ' +
+				'ante neque pulvinar neque, eget tristique quam libero at enim. Nullam vel eros ut sem volutpat ultrices ' +
+				'et sit amet sapien. Maecenas tincidunt posuere ligula sed efficitur. In pellentesque enim eget nunc bibendum,' +
+				' quis dignissim dui hendrerit. Ut id pharetra quam. Nunc a tincidunt nisi. Vestibulum in molestie metus, ' +
+				'sed imperdiet ligula. Nunc suscipit tellus non ultrices convallis. Etiam pharetra fringilla arcu.Vestibulum' +
+				' eleifend sapien lacus, et sollicitudin eros dictum eu. Sed libero erat, dictum vel tellus vitae, gravida auctor' +
+				' ipsum. Vivamus lacus risus, semper quis dignissim id, vestibulum non nisl. Sed ipsum diam, viverra quis sagittis eu,' +
+				' rhoncus et nisi. Etiam eu tristique mauris, quis sodales nulla. Cras id posuere mauris. Nullam id sapien nec felis ' +
+				'sollicitudin tincidunt. Donec tincidunt arcu neque, at tincidunt est accumsan non. Proin posuere massa' +
+				'ante neque pulvinar neque, eget tristique quam libero at enim. Nullam vel eros ut sem volutpat ultrices ' +
+				'et sit amet sapien. Maecenas tincidunt posuere ligula sed efficitur. In pellentesque enim eget nunc bibendum,' +
+				' quis dignissim dui hendrerit. Ut id pharetra quam. Nunc a tincidunt nisi. Vestibulum in molestie metus, ' +
+				'sed imperdiet ligula. Nunc suscipit tellus non ultrices convallis. Etiam pharetra fringilla arcu.Vestibulum' +
+				' eleifend sapien lacus, et sollicitudin eros dictum eu. Sed libero erat, dictum vel tellus vitae, gravida auctor' +
+				' ipsum. Vivamus lacus risus, semper quis dignissim id, vestibulum non nisl. Sed ipsum diam, viverra quis sagittis eu,' +
+				' rhoncus et nisi. Etiam eu tristique mauris, quis sodales nulla. Cras id posuere mauris. Nullam id sapien nec felis ' +
+				'sollicitudin tincidunt. Donec tincidunt arcu neque, at tincidunt est accumsan non. Proin posuere massa' +
+				' id nisl posuere convallis. Integer vel sem placerat, ullamcorper lectus non, porta massa.' +
+				' Vestibulum vel leo velit. Aliquam eget vestibulum dui, pulvinar facilisis diam.'+
+				' id nisl posuere convallis. Integer vel sem placerat, ullamcorper lectus non, porta massa.' +
+				' Vestibulum vel leo velit. Aliquam eget vestibulum dui, pulvinar facilisis diam.</div></div>';
+
+		var _html = getTemplate(_html1);
+
 		$("#button").click(function(){
 			$('#modal-window').lightbox({
 								added: added,
@@ -65,7 +98,7 @@
 								time:300,
 								width:600,
 								type:'html',
-								contentHtml:_html1,
+								contentHtml:_html,
 								closeWhenClickOutside:false
 								});
 			return false;	
@@ -74,14 +107,6 @@
 		function added () {
 						
 			$("#button-load-3").click(function(){
-				//------------				
-				//abrir html simples
-				/*var data = new Object;
-				data.width = 700;
-				data.height = 300;
-				data.contentHtml = '<div style="background-color:#ffffff;">conteúdo 2</div>';
-				data.item = $(this);*/
-				
 				//abre um novo item via ajax
 				var data = new Object;
 				data.width = 700;
@@ -96,8 +121,6 @@
 				data.item = $(this);//obrigatorio para saber qual foi o pai do botão que foi clicado
 
 				$('#modal-window').lightbox("hideContent",data);
-
-				
 				//------------
 				return false;	
 			});
@@ -178,36 +201,295 @@
 		}
 		
 		//-----------------------------------------
+		//SECTION 1
+		$("#bt-section-1").click(function(){
+			var _html = getTemplate('<div class="wrapper-lightbox"><div class="wrapper-lightbox-inner">Hello World!</div></div>');
+
+			$('#some-name').lightbox({
+				zIndex:99999,
+				background:'background-color:rgba(0,0,0,.8);',
+				time:300,
+				width:300,
+				type:'html',
+				contentHtml:_html
+			});
+
+			return false;
+		});
+
+		//SECTION2
+		$("#bt-section-2").click(function(){
+			var _html = getTemplate('Hello World!');
+
+			$('#some-name').lightbox({
+				background:'background-color:rgba(0,0,0,.8);',
+				time:300,
+				width:500,
+				type:'ajax',
+				url:"ajax.php",
+				data:{ valor: "teste"},
+				type_ajax					: "POST",
+				dataType					: "json",
+				closeWhenClickOutside:true,
+				ajax_error:function(){},
+				ajax_sucess:function(){},
+				ajax_complete:function(){}});
+
+			return false;
+		});
+
+		//SECTION 3
+		$("#bt-section-3").click(function(){
+			var _html = getTemplate('<div class="wrapper-lightbox"><div class="wrapper-lightbox-inner">Clicking on the button bellow this content will be hided and another loaded<br>' +
+			'This process can be done how many times you want.<br><br><br><a id="bt-section-3-custom" href="#" class="button button-blue">Load New Content</a></div></div>');
+
+			$('#itemLightbox').lightbox({
+				added:section3Added,
+				zIndex:99999,
+				background:'background-color:rgba(0,0,0,.8);',
+				time:300,
+				width:400,
+				type:'html',
+				contentHtml:_html
+			});
+
+			return false;
+		});
+
+		function section3Added ()
+		{
+			$('#bt-section-3-custom').click(function(){
+				var data = new Object;
+				data.width = 300;
+				data.height = 100;
+				data.ajax_sucess = function(){alert('ajax loaded');};
+				data.url = "ajax-3.php";
+				data.type = 'ajax';
+				data.data = { valor: "teste"};
+				data.type_ajax= "POST";
+				data.dataType = "json";
+				data.item = $(this);
+
+				$('#itemLightbox').lightbox("hideContent",data);
+
+				return false;
+			});
+		}
+
+		//----------------------
+		function getTemplate (_htm_)
+		{
+			return '<div class="wrapper-lightbox">' +
+					'<a href="#"><img class="lightbox-button-close" src="http://image005.flaticon.com/75/svg/70/70460.svg" width="12" height="12"></a>'+
+					_htm_ +
+					'</div>';
+		}
 	});
 
 </script>
 <style type="text/css">
-	.center{ width:960px; margin:0 auto;}
+	body{font-family: 'Open Sans', sans-serif;}
+	.center{ width:50%; margin:0 auto; padding-bottom: 100px;}
+	.wrapper{ border-top:3px solid #000000;}
+	h1{ padding: 50px 0; font-size: 20px; line-height: 26px; text-align: center; text-transform: uppercase;}
+	.center a{ display: inline-block;}
+	.button{color: #000000; background: #eeeeee; font-weight: 300; padding: 10px 20px; font-size:14px;
+		-moz-border-radius: 5px;
+		-webkit-border-radius: 5px;
+		border-radius: 5px;
+		-khtml-border-radius: 5px;}
+
+	.button-blue{ background: #3b7ce7; color: #ffffff;}
+	.button:hover{ background: #2c5cac; color: #ffffff;}
+	ul.menu{ text-align: center;}
+	li{ padding: 10px 0; display: inline-block;}
+
+	h3{ font-size: 20px; line-height: 24px; margin-bottom: 15px;}
+	.line-separator{ border: none; width: 100%; height:1px; display: block; margin: 20px 0; background-color: #aaaaaa;}
+	.button.button-small{ padding: 5px 20px;}
+
+	.box .button{ margin-top: 10px;}
+
+	.wrapper-lightbox{ background-color: #ffffff; text-align: center; line-height: 25px;}
+	.wrapper-lightbox-inner{padding: 20px 50px 20px 20px;}
+	.lightbox-button-close{ position: absolute; right:20px; top: 20px;}
+	h6{ margin-bottom: 20px; display: block; font-size: 17px;}
+	.description{ padding: 10px 0 30px 0; line-height: 25px;}
+	section{ overflow: hidden; overflow-x: scroll;}
 </style>
 </head>
 
 <body>
-<div class="center">
-<a href="#" id="button" style="border:1px solid black; padding:5px 10px; margin:50px 0 0 0; display:inline-block; width:100px; text-align:center; text-decoration:none; font-family:Arial, Helvetica, sans-serif;">HTML</a>
-<a href="#" id="button-2" style="border:1px solid black; padding:5px 10px; margin:50px 0 0 20px; display:inline-block; width:100px; text-align:center; text-decoration:none; font-family:Arial, Helvetica, sans-serif;">AJAX</a>
-<a href="#" id="button-3" style="border:1px solid black; padding:5px 10px; margin:50px 0 0 20px; display:inline-block; width:300px; text-align:center; text-decoration:none; font-family:Arial, Helvetica, sans-serif;">Abre e remove overlay após 4 segundos</a>
-<a href="#" id="button-4" style="border:1px solid black; padding:5px 10px; margin:50px 0 0 20px; display:inline-block; width:200px; text-align:center; text-decoration:none; font-family:Arial, Helvetica, sans-serif;">Chama método interno</a>
-	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat erat sagittis tortor condimentum, in gravida nisl iaculis. Vivamus ligula arcu, aliquet in purus non, dapibus placerat tortor. Sed lacinia posuere diam ut efficitur. Nulla at sollicitudin nunc. Etiam purus leo, posuere et enim in, tincidunt bibendum ex. Vivamus a massa vel turpis mollis suscipit. Curabitur eget congue neque. Sed eu varius leo, condimentum placerat dolor. Etiam vitae est sodales, varius ex sed, maximus magna.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat erat sagittis tortor condimentum, in gravida nisl iaculis. Vivamus ligula arcu, aliquet in purus non, dapibus placerat tortor. Sed lacinia posuere diam ut efficitur. Nulla at sollicitudin nunc. Etiam purus leo, posuere et enim in, tincidunt bibendum ex. Vivamus a massa vel turpis mollis suscipit. Curabitur eget congue neque. Sed eu varius leo, condimentum placerat dolor. Etiam vitae est sodales, varius ex sed, maximus magna.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat erat sagittis tortor condimentum, in gravida nisl iaculis. Vivamus ligula arcu, aliquet in purus non, dapibus placerat tortor. Sed lacinia posuere diam ut efficitur. Nulla at sollicitudin nunc. Etiam purus leo, posuere et enim in, tincidunt bibendum ex. Vivamus a massa vel turpis mollis suscipit. Curabitur eget congue neque. Sed eu varius leo, condimentum placerat dolor. Etiam vitae est sodales, varius ex sed, maximus magna.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat erat sagittis tortor condimentum, in gravida nisl iaculis. Vivamus ligula arcu, aliquet in purus non, dapibus placerat tortor. Sed lacinia posuere diam ut efficitur. Nulla at sollicitudin nunc. Etiam purus leo, posuere et enim in, tincidunt bibendum ex. Vivamus a massa vel turpis mollis suscipit. Curabitur eget congue neque. Sed eu varius leo, condimentum placerat dolor. Etiam vitae est sodales, varius ex sed, maximus magna.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat erat sagittis tortor condimentum, in gravida nisl iaculis. Vivamus ligula arcu, aliquet in purus non, dapibus placerat tortor. Sed lacinia posuere diam ut efficitur. Nulla at sollicitudin nunc. Etiam purus leo, posuere et enim in, tincidunt bibendum ex. Vivamus a massa vel turpis mollis suscipit. Curabitur eget congue neque. Sed eu varius leo, condimentum placerat dolor. Etiam vitae est sodales, varius ex sed, maximus magna.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat erat sagittis tortor condimentum, in gravida nisl iaculis. Vivamus ligula arcu, aliquet in purus non, dapibus placerat tortor. Sed lacinia posuere diam ut efficitur. Nulla at sollicitudin nunc. Etiam purus leo, posuere et enim in, tincidunt bibendum ex. Vivamus a massa vel turpis mollis suscipit. Curabitur eget congue neque. Sed eu varius leo, condimentum placerat dolor. Etiam vitae est sodales, varius ex sed, maximus magna.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat erat sagittis tortor condimentum, in gravida nisl iaculis. Vivamus ligula arcu, aliquet in purus non, dapibus placerat tortor. Sed lacinia posuere diam ut efficitur. Nulla at sollicitudin nunc. Etiam purus leo, posuere et enim in, tincidunt bibendum ex. Vivamus a massa vel turpis mollis suscipit. Curabitur eget congue neque. Sed eu varius leo, condimentum placerat dolor. Etiam vitae est sodales, varius ex sed, maximus magna.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat erat sagittis tortor condimentum, in gravida nisl iaculis. Vivamus ligula arcu, aliquet in purus non, dapibus placerat tortor. Sed lacinia posuere diam ut efficitur. Nulla at sollicitudin nunc. Etiam purus leo, posuere et enim in, tincidunt bibendum ex. Vivamus a massa vel turpis mollis suscipit. Curabitur eget congue neque. Sed eu varius leo, condimentum placerat dolor. Etiam vitae est sodales, varius ex sed, maximus magna.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat erat sagittis tortor condimentum, in gravida nisl iaculis. Vivamus ligula arcu, aliquet in purus non, dapibus placerat tortor. Sed lacinia posuere diam ut efficitur. Nulla at sollicitudin nunc. Etiam purus leo, posuere et enim in, tincidunt bibendum ex. Vivamus a massa vel turpis mollis suscipit. Curabitur eget congue neque. Sed eu varius leo, condimentum placerat dolor. Etiam vitae est sodales, varius ex sed, maximus magna.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat erat sagittis tortor condimentum, in gravida nisl iaculis. Vivamus ligula arcu, aliquet in purus non, dapibus placerat tortor. Sed lacinia posuere diam ut efficitur. Nulla at sollicitudin nunc. Etiam purus leo, posuere et enim in, tincidunt bibendum ex. Vivamus a massa vel turpis mollis suscipit. Curabitur eget congue neque. Sed eu varius leo, condimentum placerat dolor. Etiam vitae est sodales, varius ex sed, maximus magna.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat erat sagittis tortor condimentum, in gravida nisl iaculis. Vivamus ligula arcu, aliquet in purus non, dapibus placerat tortor. Sed lacinia posuere diam ut efficitur. Nulla at sollicitudin nunc. Etiam purus leo, posuere et enim in, tincidunt bibendum ex. Vivamus a massa vel turpis mollis suscipit. Curabitur eget congue neque. Sed eu varius leo, condimentum placerat dolor. Etiam vitae est sodales, varius ex sed, maximus magna.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat erat sagittis tortor condimentum, in gravida nisl iaculis. Vivamus ligula arcu, aliquet in purus non, dapibus placerat tortor. Sed lacinia posuere diam ut efficitur. Nulla at sollicitudin nunc. Etiam purus leo, posuere et enim in, tincidunt bibendum ex. Vivamus a massa vel turpis mollis suscipit. Curabitur eget congue neque. Sed eu varius leo, condimentum placerat dolor. Etiam vitae est sodales, varius ex sed, maximus magna.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat erat sagittis tortor condimentum, in gravida nisl iaculis. Vivamus ligula arcu, aliquet in purus non, dapibus placerat tortor. Sed lacinia posuere diam ut efficitur. Nulla at sollicitudin nunc. Etiam purus leo, posuere et enim in, tincidunt bibendum ex. Vivamus a massa vel turpis mollis suscipit. Curabitur eget congue neque. Sed eu varius leo, condimentum placerat dolor. Etiam vitae est sodales, varius ex sed, maximus magna.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat erat sagittis tortor condimentum, in gravida nisl iaculis. Vivamus ligula arcu, aliquet in purus non, dapibus placerat tortor. Sed lacinia posuere diam ut efficitur. Nulla at sollicitudin nunc. Etiam purus leo, posuere et enim in, tincidunt bibendum ex. Vivamus a massa vel turpis mollis suscipit. Curabitur eget congue neque. Sed eu varius leo, condimentum placerat dolor. Etiam vitae est sodales, varius ex sed, maximus magna.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat erat sagittis tortor condimentum, in gravida nisl iaculis. Vivamus ligula arcu, aliquet in purus non, dapibus placerat tortor. Sed lacinia posuere diam ut efficitur. Nulla at sollicitudin nunc. Etiam purus leo, posuere et enim in, tincidunt bibendum ex. Vivamus a massa vel turpis mollis suscipit. Curabitur eget congue neque. Sed eu varius leo, condimentum placerat dolor. Etiam vitae est sodales, varius ex sed, maximus magna.</p>
+<div class="wrapper">
+	<div class="center">
+		<h1>Jquery Lightbox</h1>
+		<ul class="menu">
+			<li><a href="#" id="button" class="button button-blue" >HTML</a></li>
+			<li><a href="#" id="button-2" class="button button-blue">AJAX</a></li>
+			<li><a href="#" id="button-3" class="button button-blue">Open & Close</a></li>
+			<li><a href="#" id="button-4" class="button button-blue">Call internal Method</a></li>
+		</ul>
+		<hr class="line-separator">
 
+		<div class="box">
+			<section>
+				<h3>Get started with html</h3>
+				<pre class="prettyprint lang-js">
+
+var _html = 'Here goes your html structure';
+
+$('#some-name').lightbox({
+  zIndex:99999,
+  background:'background-color:rgba(0,0,0,.8);',
+  time:300,
+  width:300,
+  type:'html',
+  contentHtml:_html
+});</pre>
+			</section>
+			<a href="#" id="bt-section-1" class="button button-blue button-small" >Try it</a>
+		</div>
+		<hr class="line-separator">
+
+
+		<div class="box">
+			<section>
+				<h3>Lightbox ajax call</h3>
+				<pre class="prettyprint lang-js">
+$('#el').lightbox({
+  background:'background-color:rgba(0,0,0,.8);',
+  time:300,
+  width:500,
+  type:'ajax',
+  url:myurl,
+  data:{ key: "value"},
+  type_ajax: "POST",
+  dataType: "json",
+  ajax_error:ajax_error,
+  ajax_sucess:ajax_sucess,
+  ajax_complete:ajax_complete
+});</pre>
+			</section>
+			<a href="#" id="bt-section-2" class="button button-blue button-small" >Try it</a>
+		</div>
+
+		<hr class="line-separator">
+
+		<div class="box">
+			<section>
+				<h3>Lightbox hide content</h3>
+				<pre class="prettyprint lang-js">
+$('#el').lightbox({
+  background:'background-color:rgba(0,0,0,.8);',
+  time:300,
+  width:500,
+  type:'ajax',
+  url:myurl,
+  data:{ key: "value"},
+  type_ajax: "POST",
+  dataType: "json",
+  ajax_error:ajax_error,
+  ajax_sucess:ajax_sucess,
+  ajax_complete:ajax_complete
+});</pre>
+			</section>
+			<a href="#" id="bt-section-3" class="button button-blue button-small" >Try it</a>
+		</div>
+
+
+
+		<hr class="line-separator">
+
+		<div class="box">
+		<section>
+			<h3>Options</h3>
+				<pre class="prettyprint lang-js">
+background: 'background-color:rgba(0,0,0,.8);',//background do overlay
+zIndex: "10000",
+type: 'html',//ajax or html
+time: 300,//time to open and close
+width: 300,//width box
+height: null,//height box
+show_loader: "",//Some loader image to load
+closeWhenClickOutside: false,//close overlay whe clicked outside it
+close_button: "",//a custom close button
+url	: "",//path to load ajax url
+type_ajax: "",//method GET ou POST
+dataType: "",//structure json or ""
+data: "",//data to be received when dataType == json
+closeWithDelay: 0,
+added: function() {},//plugin added
+destroyed: function(){},//plugin removed
+ajax_error: function(){},//error ajax
+ajax_sucess: function(){},//sucess ajax
+ajax_complete: function(){}//ajax complet,
+</pre>
+		</section>
+			</div>
+
+
+		<hr class="line-separator">
+
+		<div class="box">
+			<section>
+				<h3>Methods</h3>
+				<h6>- hideContent</h6>
+				<div class="description">
+					<p>Hides the central box when lightbox is active to load another one.</p>
+					<p>It is used whe wen have to show another thing when the lightbox is already on users screen.</p>
+					<p>We can load another resource by html or ajax.</p>
+				</div>
+				<pre class="prettyprint lang-js">
+var data = new Object;
+data.width = 700;
+data.height = 300;
+data.ajax_sucess = function(){};
+data.url = "somefile.php";
+data.type = 'ajax';
+data.data = { value: "teste"};
+data.type_ajax = "POST";
+data.dataType = "json";
+data.item = $(this);//mandatory to the plugin knows who is the parent item
+
+$('#modal-window').lightbox("hideContent",data);
+</pre>
+			</section>
+		</div>
+
+
+
+		<hr class="line-separator">
+
+		<div class="box">
+			<section>
+				<h6>- destroy</h6>
+				<div class="description">
+					<p>Used to remove immediately the plugin</p>
+				</div>
+				<pre class="prettyprint lang-js">
+$('#modal-window').lightbox("destroy");
+</pre>
+			</section>
+		</div>
+
+		<hr class="line-separator">
+
+		<div class="box">
+			<section>
+				<h6>- remove</h6>
+				<div class="description">
+					<p>Used to remove the plugin with fade out animation</p>
+				</div>
+				<pre class="prettyprint lang-js">
+$('#modal-window').lightbox("destroy");
+</pre>
+			</section>
+		</div>
+
+
+
+
+	</div>
 </div>
 </body>
 </html>
