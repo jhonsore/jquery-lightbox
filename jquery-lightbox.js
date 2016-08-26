@@ -182,13 +182,19 @@
 						}
 					);
 
-					var _height = (plugin_settings.height) ? plugin_settings.height : _div.outerHeight(true);
+					var _height = (plugin_settings.height) ? plugin_settings.height : null;
 
-					_div.css({ height:_height});
+					if(_height){
+						_div.css({ height:_height});
+						$('.lightbox-content .lightbox-load-content',$(plugin_settings.object)).css(
+							{
+								height:(_height)+"px"
+							}
+						);
+					}
 
 					$('.lightbox-content .lightbox-load-content',$(plugin_settings.object)).css(
 						{
-							height:(_height)+"px",
 							margin:"0 auto"
 						}
 					);
@@ -243,13 +249,19 @@
 				}
 			);
 
-			var _height = (plugin_settings.height) ? plugin_settings.height : _div.outerHeight(true);
+			var _height = (plugin_settings.height) ? plugin_settings.height : null;
 
-			_html.css({ height:_height});
+			if(_height){
+				_div.css({ height:_height});
+				$('.lightbox-content .lightbox-load-content',$(plugin_settings.object)).css(
+					{
+						height:(_height)+"px"
+					}
+				);
+			}
 
 			$('.lightbox-content .lightbox-load-content',$(plugin_settings.object)).css(
 				{
-					height:(_height)+"px",
 					margin:"0 auto"
 				}
 			);
@@ -306,15 +318,18 @@
 							}
 						);
 
-						var _height = (plugin_settings.height) ? plugin_settings.height : _div.outerHeight(true);
+						var _height = (plugin_settings.height) ? plugin_settings.height : null;
 
-						_html.css({height:_height});
+						if(_height){
+							_html.css({height:_height});
 
-						$('.lightbox-load-content',$obj).css(
-							{
-								height:(_height)+"px"
-							}
-						);
+							$('.lightbox-load-content',$obj).css(
+								{
+									height:(_height)+"px"
+								}
+							);
+						}
+
 
 						addCloseButton (_div);
 
@@ -351,15 +366,17 @@
 					}
 				);
 
-				var _height = (plugin_settings.height) ? plugin_settings.height : _div.outerHeight(true);
+				var _height = (plugin_settings.height) ? plugin_settings.height : null;
 
-				_html.css({height:_height});
+				if(_height){
+					_html.css({height:_height});
 
-				$('.lightbox-load-content',$obj).css(
-					{
-						height:(_height)+"px"
-					}
-				);
+					$('.lightbox-load-content',$obj).css(
+						{
+							height:(_height)+"px"
+						}
+					);
+				}
 
 				plugin_settings.added.call();
 
@@ -410,13 +427,12 @@
 							_html.remove();
 							count = ($('.lightbox-load-content',plugin_element).children().length)-1;
 
-
 							var _itemShow = $('.content-loaded',plugin_element).eq(count);
 
 							$('.lightbox-load-content',plugin_element).css(
 								{
-									width:(_itemShow.width())+"px",
-									height:(_itemShow.height())+"px"
+									width:(_itemShow.width())+"px"/*,
+								 height:(_itemShow.height())+"px"*/
 								}
 							);
 
